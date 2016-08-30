@@ -1,33 +1,3 @@
-# CIS 198: Intro to COBOL
-
-![](img/cobol.png)
-
----
-# CIS 198: Intro to COBOL
-
-- Designed in 1959 (57 years ago!)
-- We will be using the COBOL2014 standard.
-
-```cobol
-IDENTIFICATION DIVISION.
-PROGRAM-ID. hello-world.
-PROCEDURE DIVISION.
-    DISPLAY "Hello, world!"
-    .
-```
-
-???
-
-We will be using the 2014 standard.
-
-Cobol really is a fascinating language. It has supported object oriented
-programming since 2002.
-
-There's a lot to cover today, I'd like to do a bit of an introduction to syntax,
-and Cobol has over 300 reserved keywords, so I'd like to get started as soon as
-possible.
-
----
 # CIS 198: Rust Programming
 
 ![](img/rust.png)
@@ -177,7 +147,7 @@ Date | Stable | Beta | Nightly
 ### Administrivia: Homeworks (50%)
 
 - 8 homeworks.
-- Released each Tuesday and (usually) due the following Tuesday night at midnight.
+- Released each Tuesday and (usually) due the following Wednesday night at midnight.
 - We will be using Classroom for GitHub.
     - Click the link to make a private repo for every homework, which will be your submission.
 - You get 5 late days (24 hours each). You may use up to 2 late days on an
@@ -191,15 +161,15 @@ Date | Stable | Beta | Nightly
 ### Prerequisites
 
 - CIS240 is suggested.
-- Familiarity with Git and using the command line.
-    - There are links on hw0 about both of these things.
 - Not a hard limit, although you may struggle with references if you haven't
   taken 240.
+- Familiarity with Git and using the command line.
+    - There are links on hw0 about both of these things.
 
 ---
 ### Administrivia: Office Hours
 
-- TBA
+- Monday, Tuesday, Wednesdays
 
 Office hours held in the Levine 6th floor lounge.
 
