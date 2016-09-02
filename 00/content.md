@@ -34,7 +34,7 @@ nearly all segfaults, and guarantees thread safety."
 ---
 ### Blazingly Fast
 
-- Speed comparable to C/C++.
+- Speed comparable to C/C++
 - Rust compiles to native code
 - Has no garbage collector
 - Many abstractions have zero cost
@@ -54,9 +54,9 @@ nearly all segfaults, and guarantees thread safety."
 ---
 ### Guarantees Thread Safety
 
-- Rust _does not allow_ shared, mutable data.
-- Mutexes (and other atomics).
-- Compiler rules for shared data (Send and Sync).
+- Rust _does not allow_ shared, mutable data
+- Mutexes (and other atomics)
+- Compiler rules for shared data (Send and Sync)
 
 ---
 ### Functional
