@@ -619,17 +619,10 @@ doesn't.
     - `for` loops use an _iterator expression_:
     - `n..m` creates an iterator from n to m (_exclusive_).
     - `n...m` (_inclusive_ range) is currently experimental!
-    - Some data structures can be used as iterators, like arrays and `Vec`s.
 
 ```rust
 // Loops from 0 to 9.
 for x in 0..10 {
-    println!("{}", x);
-}
-
-let xs = [0, 1, 2, 3, 4];
-// Loop through elements in a slice of `xs`.
-for x in &xs {
     println!("{}", x);
 }
 ```
@@ -637,6 +630,19 @@ for x in &xs {
 ???
 
 We will definitely talk more about how these iterators work.
+
+---
+### Loops
+
+- Some data structures can be used as iterators, like `Vec`s.
+- Only slices can be iterated over, not arrays.
+
+```rust
+let xs = [0, 1, 2, 3, 4];
+for x in &xs {
+    println!("{}", x);
+}
+```
 
 ---
 ## Match statements
