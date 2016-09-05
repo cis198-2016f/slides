@@ -852,7 +852,7 @@ fn it_works() {
 ---
 ## HW00: Hello Cargo & Hello Rust
 
-- Due Tuesday, 2016-09-06, 11:59pm.
+- Due Wednesday, 2016-09-07, 11:59pm.
 - Install `rustup`: manages installations of multiple versions of Rust.
     - Supports Linux / OS X / Windows.
     - Or use the 19x VM.
@@ -861,7 +861,7 @@ fn it_works() {
 ---
 ## HW01: Finger Exercises
 
-- Due Tuesday, 2016-09-06, 11:59pm.
+- Due Wednesday, 2016-09-07, 11:59pm.
 - Introduction to Rust with "finger exercises". Use this lecture as a resource!
     - Sieve of Eratosthenes, Tower of Hanoi
 
