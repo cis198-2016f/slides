@@ -6,7 +6,6 @@
 ## Prologue: Modules
 
 - Everything in Rust is module-scoped.
-- If it's not marked `pub`, it's only accessible from within the same module.
 - Modules can be defined with `mod`:
 
 ```rust
@@ -20,6 +19,7 @@ mod japanese {
     }
 }
 ```
+- If it's not marked `pub`, it's only accessible from within the same module.
 
 Reference: [TRPL 4.25](http://doc.rust-lang.org/book/crates-and-modules.html)
 
@@ -55,7 +55,7 @@ src/
 ```
 src/
 ├── lib.rs
-└── english
+└── english/
     ├── mod.rs
     └── greetings.rs
 ```
@@ -121,7 +121,7 @@ use super::japanese;
 ---
 ## Structured Data
 
-- Rust has two simple ways of creating structured data types:
+- Rust has two simple types of structured data types:
     - Structs: C-like structs to hold data.
     - Enums: OCaml-like; data that can be one of several types.
 
@@ -227,15 +227,20 @@ mod foo {
 - Nothing special about the function `new` (except by convention).
 
 ---
-### Struct `match`ing
+### Fields
 
-- Destructure structs with `match` statements.
+- The other way of accessing fields is to destructure your struct.
 
 ```rust
 pub struct Point {
     x: i32,
     y: i32,
 }
+
+let p = Point { x: 0, y: 0 };
+
+let Point { x, y } = p;
+println!("({}, {})", x, y);
 
 match p {
     Point { x, y } => println!("({}, {})", x, y)
@@ -248,16 +253,12 @@ match p {
   interesting
 
 ---
-### Struct `match`ing
+### Fields
 
 ```rust
-match p {
-    Point { y, .. } => println!("{}", y)
-}
+let Point { y, .. } => println!("{}", y)
 
-match p {
-    Point { y: y1, x: x1 } => println!("({}, {})", x1, y1)
-}
+let Point { y: y1, x: x1 } => println!("({}, {})", x1, y1)
 ```
 - Fields do not need to be in order.
 - List fields inside braces to bind struct members to those variable names.
@@ -282,6 +283,10 @@ let x2 = Foo { a: 4, .. x };
 // Useful to update multiple fields of the same struct:
 x = Foo { a: 2, b: 2 .. x };
 ```
+
+???
+
+Questions?
 
 ---
 ## Tuple Structs
@@ -357,77 +362,9 @@ enum Resultish {
 
 ```rust
 match make_request() {
-    Resultish::Ok =>
-        println!("Success!"),
-    Resultish::Warning { code, message } =>
-        println!("Warning: {}!", message),
-    Resultish::Err(s) =>
-        println!("Failed with error: {}", s),
-}
-```
-
----
-## Recursive Types
-
-- You might think to create a nice functional-style `List` type:
-
-```rust
-enum List {
-    Nil,
-    Cons(i32, List),
-}
-```
-
----
-## Recursive Types
-
-- ...unfortunately, this would have infinite size at compile time!
-- Structs and enums are stored inline by default, so they cannot be recursive.
-    - i.e. elements are not stored by reference, unless explicitly specified.
-- The compiler tells us how to fix this, but what's a `box`?
-
-```rust
-enum List {
-    Nil,
-    Cons(i32, List),
-}
-// error: recursive type `main::List` has infinite size
-// help: insert indirection (e.g., a `Box`, `Rc`, or `&`)
-// at some point to make `List` representable
-```
-
----
-## Boxes
-
-- A box is one of Rust's ways of allocating data on the heap.
-- A `Box<T>` is a heap pointer with exactly one owner.
-    - A `Box` owns its data (the `T`), which lives on the heap.
-- Boxes are destructed when they go out of scope.
-    - Freeing the data on the heap.
-- Create a `Box` with `Box::new()`:
-
-```rust
-let boxed_five = Box::new(5);
-
-enum List {
-    Nil,
-    Cons(i32, Box<List>), // OK!
-}
-```
-
----
-## Patterns
-
-- Use `...` to specify a range of values. Useful for numerics and `char`s.
-- Use `_` to bind against any value (like any variable binding) and discard the
-  binding.
-
-```rust
-let x = 17;
-
-match x {
-    0 ... 5 => println!("zero through five (inclusive)"),
-    _ => println!("You still lose the game."),
+    Resultish::Ok => println!("Success!"),
+    Resultish::Warning { code, message } => println!("{}", message),
+    Resultish::Err(s) => println!("Failed with error: {}", s),
 }
 ```
 
@@ -455,7 +392,7 @@ match x {
     ref mut r => *r = 5
 }
 ```
-- Similar to `let ref`.
+- Same as `let ref`.
 
 ---
 ### `if-let` Statements
@@ -478,19 +415,15 @@ enum Resultish {
 ```rust
 match make_request() {
     Resultish::Err(_) => println!("Total and utter failure."),
-    _ => println!("ok."),
+    _ => (),
 }
 ```
 
 - We can simplify this statement with an `if-let` binding:
 
 ```rust
-let result = make_request();
-
-if let Resultish::Err(s) = result {
+if let Resultish::Err(s) = make_request() {
     println!("Total and utter failure: {}", s);
-} else {
-    println!("ok.");
 }
 ```
 
@@ -561,16 +494,6 @@ fn main() {
     - No inherent notion of constructors, no automatic construction.
 
 ---
-## Implementations
-
-- Methods, associated functions, and functions in general cannot be overloaded.
-    - e.g. `Vec::new()` and `Vec::with_capacity(capacity: usize)` are both
-      constructors for `Vec`
-- Methods cannot be inherited.
-    - Types must be composed instead.
-    - However, traits (coming soon) have basic inheritance.
-
----
 ## Methods
 
 ```rust
@@ -625,5 +548,64 @@ impl Point {
     fn mirror_y(self) -> Point {
         Point { x: -self.x, y: self.y }
     }
+}
+```
+
+---
+## Implementations
+
+- Methods, associated functions, and functions in general cannot be overloaded.
+    - e.g. `Vec::new()` and `Vec::with_capacity(capacity: usize)` are both
+      constructors for `Vec`
+- Methods cannot be inherited.
+    - Types must be composed instead.
+    - However, traits (coming soon) have basic inheritance.
+
+---
+## Recursive Types
+
+- You might think to create a nice functional-style `List` type:
+
+```rust
+enum List {
+    Nil,
+    Cons(i32, List),
+}
+```
+
+---
+## Recursive Types
+
+- ...unfortunately, this would have infinite size at compile time!
+- Structs and enums are stored inline by default, so they cannot be recursive.
+    - i.e. elements are not stored by reference, unless explicitly specified.
+- The compiler tells us how to fix this, but what's a `box`?
+
+```rust
+enum List {
+    Nil,
+    Cons(i32, List),
+}
+// error: recursive type `main::List` has infinite size
+// help: insert indirection (e.g., a `Box`, `Rc`, or `&`)
+// at some point to make `List` representable
+```
+
+---
+## Boxes
+
+- A box is one of Rust's ways of allocating data on the heap.
+- A `Box<T>` is a heap pointer with exactly one owner.
+    - A `Box` owns its data (the `T`), which lives on the heap.
+- Boxes are destructed when they go out of scope.
+    - Freeing the data on the heap.
+- Create a `Box` with `Box::new()`:
+
+```rust
+let boxed_five = Box::new(5);
+
+enum List {
+    Nil,
+    Cons(i32, Box<List>), // OK!
 }
 ```

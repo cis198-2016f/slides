@@ -57,12 +57,16 @@ free(x);
     - Yes, it's fast!
 - Cons:
     - Extremely error prone:
-        - Dangling pointers, double frees, memory leaks, ...
+        - Dangling pointers, double frees, memory leaks
+        - Uninitialized memory errors
+        - **Unsafe**
     - Tedious to write and maintain
 
 ---
 ## Garbage Collection
 
+- Implicit memory allocation (e.g. `new` keyword); often already initialized
+- No manual de-allocation
 - Periodically look at all of the data on the heap and figure out what's still
   "alive".
     - i.e., variable in the program is still pointing to it.
@@ -94,7 +98,7 @@ free(x);
 
 - Pros:
     - Fast execution - no GC overhead
-    - No (easy to avoid) memory usage bugs
+    - No memory usage bugs
 - Cons:
     - Slower compilation times
     - Compiler is not always all-knowing and might need hints
@@ -108,11 +112,10 @@ free(x);
 ---
 ## Ownership
 
+- A piece of data has exactly one owner.
 - A variable binding _takes ownership_ of its data.
-    - A piece of data can only have one owner at a time.
-- When a binding goes out of scope, the bound data is freed.
+- When a binding goes out of scope, the owned data is freed.
     - Heap-allocated data is de-allocated.
-- Data _must be guaranteed_ to outlive its references.
 
 ```rust
 fn foo() {
@@ -123,8 +126,8 @@ fn foo() {
     v1.pop();
     v1.push(4);
 
-    // At the end of the scope, v1 goes out of scope.
-    // v1 still owns the Vec object, so it can be cleaned up.
+    // At the end of the function, v1 goes out of scope.
+    // v1 still owns the Vec object, so the Vec can be freed.
 }
 ```
 
@@ -234,6 +237,8 @@ let v_ref = &v;
 // use v_ref to access the data in the vector v.
 assert_eq!(v[1], v_ref[1]);
 ```
+
+- Data _must be guaranteed_ to outlive its references.
 
 ???
 
@@ -456,30 +461,13 @@ for v in &vs {
 - Valid in C, C++...
 
 ```rust
-let y: &i32;
-{
-    let x = 5;
-    y = &x; // error: `x` does not live long enough
+fn foo() -> &Vec<i32> {
+    let v = vec![];
+    return &v;
 }
-println!("{}", *y);
-```
-
-- The full error message:
-
-```
-error: `x` does not live long enough
-note: reference must be valid for the block suffix following statement
-    0 at 1:16
-...but borrowed value is only valid for the block suffix
-    following statement 0 at 4:18
 ```
 
 - This eliminates a _huge_ number of memory safety bugs _at compile time_.
-
-???
-
-As a side note, this technique of creating a block to limit the scope of a
-variable (in this case x) is pretty useful.
 
 ---
 ## Example: Vectors
