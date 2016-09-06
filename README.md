@@ -1,4 +1,4 @@
-# CIS 198 Homework - Fall 2016
+# CIS 198 Slides - Fall 2016
 
 This repo stores the lecture slides for CIS198. Slides are written in Markdown
 and, rendered to HTML using [remark.js], and hosted by github.io.
