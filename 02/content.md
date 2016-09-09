@@ -680,7 +680,7 @@ let p = Pizza(vec![1, 2, 3, 4]);
 ### `static`
 
 ```rust
-static PI: f32 = 3.1419;
+static PI: f32 = 3.1416;
 ```
 
 - Static variables have `'static` lifetimes.
