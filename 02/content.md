@@ -713,7 +713,7 @@ static mut counter: i32 = 0;
 ### `const`
 
 ```rust
-const PI: f32 = 3.1419;
+const PI: f32 = 3.1416;
 ```
 
 - Defines constants that live for the duration of the program.
