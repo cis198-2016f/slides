@@ -506,7 +506,9 @@ impl Point {
 
 fn main() {
     let p = Point { x: 1, y: 2 };
-    p.distance();
+    let q = Point { x: 3, y: 7 };
+
+    println!("Distance: {}", p.distance(q));
 }
 ```
 
