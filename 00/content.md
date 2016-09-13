@@ -148,7 +148,7 @@ Date | Stable | Beta | Nightly
 
 - 8 homeworks.
 - Released each Tuesday and (usually) due the following Wednesday night at midnight.
-- We will be using Classroom for GitHub.
+- We will be using GitHub Classroom.
     - Click the link to make a private repo for every homework, which will be your submission.
 - You get 5 late days (24 hours each). You may use up to 2 late days on an
   assignment.
@@ -856,7 +856,7 @@ fn it_works() {
 - Install `rustup`: manages installations of multiple versions of Rust.
     - Supports Linux / OS X / Windows.
     - Or use the 19x VM.
-- Submitting with Classroom for GitHub is as easy as ~~pie~~ pushing to your private repo.
+- Submitting with GitHub Classroom is as easy as ~~pie~~ pushing to your private repo.
 
 ---
 ## HW01: Finger Exercises
