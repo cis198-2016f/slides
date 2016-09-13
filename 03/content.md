@@ -407,7 +407,7 @@ enum Result<T, E> {
 - You can only do this for the following core traits:
     - `Clone`, `Copy`, `Debug`, `Default`, `Eq`,
     - `Hash`, `Ord`, `PartialEq`, `PartialOrd`.
-- Deriving custom traits is an unstable feature as of Rust 1.6.
+- Enabling `derive` on custom traits can be done through compiler plugins.
 - Careful: deriving a trait won't always work.
     - Can only derive a trait on a data type when all of its members can have derived the trait.
     - e.g., `Eq` can't be derived on a struct containing only `f32`s, since
@@ -743,22 +743,6 @@ use_foo(&198i32);
     - Its methods do not require that `Self: Sized`
 
 &sup1;taken from Rustdocs
-
----
-### Addendum: Generics With Lifetime Bounds
-
-- Some generics may have lifetime bounds like `T: 'a`.
-- Semantically, this reads as "Type `T` must live at least as long as the lifetime `'a`."
-- Why is this useful?
-
----
-### Addendum: Generics With Lifetime Bounds
-
-- Imagine you have some collection of type `T`.
-- If you iterate over this collection, you should be able to guarantee that
-    everything in it lives as long as the collection.
-    - If you couldn't, Rust wouldn't be safe!
-- `std::Iterator` structs usually contain these sorts of constraints.
 
 ---
 ## Iterators
