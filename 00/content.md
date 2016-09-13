@@ -573,7 +573,7 @@ if x > 0 {
 
 ```rust
 if x <= 0 {
-    println!("Too small!");
+    println!("Too small!")
 }
 ```
 
