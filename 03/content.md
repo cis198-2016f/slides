@@ -886,3 +886,15 @@ impl<I: Iterator> IntoIterator for I
 ```
 
 - All types that implement `Iterator` automatically implement `IntoIterator`.
+
+---
+## Next Time
+
+- Closures
+- Standard Library Overview
+
+---
+## HW03: A Better BST
+
+- Due Wednesday, 2016-09-21, 11:59pm.
+- Use `Option`, implement a trait, then implement iterators
