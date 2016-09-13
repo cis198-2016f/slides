@@ -822,7 +822,7 @@ let values = vec![1, 2, 3, 4, 5];
 ### Example: Odds
 
 ```rust
-/// An iterator which counts from one to five
+/// An iterator which counts from one to twenty by twos
 struct OddCounter {
     count: usize,
 }
