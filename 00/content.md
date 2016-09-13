@@ -384,14 +384,14 @@ Even if the parser for this syntax highlighter doesn't believe me.
 ```rust
 let arr1 = [1, 2, 3]; // (array of 3 elements)
 let arr2 = [2; 30];   // (array of 30 values of `2`)
-println!("{}", arr[1]); // ==> 2
+println!("{}", arr1[1]); // ==> 2
 ```
 
 - `arr1` is of type `[i32; 3]`; `arr2` is of type `[i32; 30]`
 - Arrays types are written `[T; N]`.
     - `N` is a compile-time _constant_. Arrays cannot be resized.
     - Array access is bounds-checked at runtime.
-- Arrays are indexed with `[]` (like most other languages):
+- Arrays are indexed with `[]` (like most other languages).
 
 ---
 ### Slices
