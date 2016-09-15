@@ -301,7 +301,133 @@ impl Graph for MyGraph {
 - Methods on the trait like `Iterator::next` then return an `Option<Self::Item>`!
     - This lets you easily specify what type a client gets by iterating over
         your collection.
-TODO: move iterators up here, or not?
+
+---
+## Iterators
+
+```rust
+pub trait Iterator {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+
+    // More fields omitted
+}
+```
+
+- A Trait with an associated type, `Item`, and a method `next` which yields that
+  type.
+- Call `next` repeatedly to get the next item, or `None` if the iterator has
+  been exhausted.
+
+---
+## Iterators
+
+- Iterators provide syntactic sugar for `for` loops:
+
+```rust
+let values = vec![1, 2, 3, 4, 5];
+for x in values {
+    /* loop body */
+}
+```
+
+---
+## Iterators
+
+- Iterators provide syntactic sugar for `for` loops:
+
+```rust
+let values = vec![1, 2, 3, 4, 5];
+{
+    let result = match values.into_iter() {
+        mut iter => loop {
+            match iter.next() {
+                Some(x) => { /* loop body */ },
+                None => break,
+            }
+        },
+    };
+    result
+}
+```
+
+- `values.into_iter()` returns a struct that implements `Iterator`.
+- `into_iter()` is declared by the trait `IntoIterator`.
+    - Automatically implemented by anything with the Trait `Iterator`.
+
+???
+
+- Brace scoping trick
+- why let result
+
+---
+### Example: Odds
+
+```rust
+/// An iterator which counts from one to twenty by twos
+struct OddCounter {
+    count: usize,
+}
+
+impl Iterator for OddCounter {
+    type Item = usize;
+
+    fn next(&mut self) -> Option<usize> {
+        if self.count < 20 {
+            self.count += 2;
+            Some(self.count)
+        } else {
+            None
+        }
+    }
+}
+```
+
+---
+## Iterators
+
+- Like everything else, there are three types of iteration:
+    - `into_iter()`, yielding `T`s.
+    ```rust
+    for x in values { /* ... */ }
+    ```
+    - `iter()`, yielding `&T`s.
+    ```rust
+    for x in &values { /* ... */ }
+    ```
+    - `iter_mut()`, yielding `&mut T`s.
+    ```rust
+    for x in &mut values { /* ... */ }
+    ```
+- A collection may provide some or all of these.
+
+---
+## `IntoIterator`
+
+```rust
+pub trait IntoIterator where Self::IntoIter::Item == Self::Item {
+    type Item;
+    type IntoIter: Iterator;
+
+    fn into_iter(self) -> Self::IntoIter;
+}
+```
+
+- `impl IntoIterator for T` should yield an `Iterator` that moves values
+    - i.e. same behavior as `t.into_iter()`
+- `impl IntoIterator for &T` should yield an `Iterator` that yields references
+    - i.e. same behavior as `t.iter()`
+- `impl IntoIterator for &mut T` should yield an `Iterator` that yields references
+    - i.e. same behavior as `t.iter_mut()`
+
+---
+## `IntoIterator`
+
+```rust
+impl<I: Iterator> IntoIterator for I
+```
+
+- All types that implement `Iterator` automatically implement `IntoIterator`.
 
 ---
 ## Trait Scope
@@ -743,133 +869,6 @@ use_foo(&198i32);
     - Its methods do not require that `Self: Sized`
 
 &sup1;taken from Rustdocs
-
----
-## Iterators
-
-```rust
-pub trait Iterator {
-    type Item;
-    fn next(&mut self) -> Option<Self::Item>;
-
-    // More fields omitted
-}
-```
-
-- A Trait with an associated type, `Item`, and a method `next` which yields that
-  type.
-- Call `next` repeatedly to get the next item, or `None` if the iterator has
-  been exhausted.
-
----
-## Iterators
-
-- Iterators provide syntactic sugar for `for` loops:
-
-```rust
-let values = vec![1, 2, 3, 4, 5];
-for x in values {
-    /* loop body */
-}
-```
-
----
-## Iterators
-
-- Iterators provide syntactic sugar for `for` loops:
-
-```rust
-let values = vec![1, 2, 3, 4, 5];
-{
-    let result = match values.into_iter() {
-        mut iter => loop {
-            match iter.next() {
-                Some(x) => { /* loop body */ },
-                None => break,
-            }
-        },
-    };
-    result
-}
-```
-
-- `values.into_iter()` returns a struct that implements `Iterator`.
-- `into_iter()` is declared by the trait `IntoIterator`.
-    - Automatically implemented by anything with the Trait `Iterator`.
-
-???
-
-- Brace scoping trick
-- why let result
-
----
-### Example: Odds
-
-```rust
-/// An iterator which counts from one to twenty by twos
-struct OddCounter {
-    count: usize,
-}
-
-impl Iterator for OddCounter {
-    type Item = usize;
-
-    fn next(&mut self) -> Option<usize> {
-        if self.count < 20 {
-            self.count += 2;
-            Some(self.count)
-        } else {
-            None
-        }
-    }
-}
-```
-
----
-## Iterators
-
-- Like everything else, there are three types of iteration:
-    - `into_iter()`, yielding `T`s.
-    ```rust
-    for x in values { /* ... */ }
-    ```
-    - `iter()`, yielding `&T`s.
-    ```rust
-    for x in &values { /* ... */ }
-    ```
-    - `iter_mut()`, yielding `&mut T`s.
-    ```rust
-    for x in &mut values { /* ... */ }
-    ```
-- A collection may provide some or all of these.
-
----
-## `IntoIterator`
-
-```rust
-pub trait IntoIterator where Self::IntoIter::Item == Self::Item {
-    type Item;
-    type IntoIter: Iterator;
-
-    fn into_iter(self) -> Self::IntoIter;
-}
-```
-
-- `impl IntoIterator for T` should yield an `Iterator` that moves values
-    - i.e. same behavior as `t.into_iter()`
-- `impl IntoIterator for &T` should yield an `Iterator` that yields references
-    - i.e. same behavior as `t.iter()`
-- `impl IntoIterator for &mut T` should yield an `Iterator` that yields references
-    - i.e. same behavior as `t.iter_mut()`
-
----
-## `IntoIterator`
-
-```rust
-impl<I: Iterator> IntoIterator for I
-```
-
-- All types that implement `Iterator` automatically implement `IntoIterator`.
 
 ---
 ## Next Time
