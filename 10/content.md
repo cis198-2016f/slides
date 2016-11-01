@@ -7,8 +7,6 @@
 
 - One program that executes multiple instructions in parallel.
 
-TODO
-
 ---
 ## What is a Thread?
 
