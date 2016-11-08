@@ -64,9 +64,25 @@ pub fn read(fd: RawFd, buf: &mut [u8]) -> Result<usize>
     - `process`: running other processes
 
 ---
-## stdlib
+## `#[no_std]`
 
-- `mem::replace`
+- Produce a Rust binary that doesn't rely on the standard library.
+    - Instead, you _have_ to link against `libc`
+- You can disable the compiler-generated `main` function and use `#[start]` to
+  designate your own.
+```rust
+// Entry point for this program
+#[start]
+fn start(_argc: isize, _argv: *const *const u8) -> isize {
+    0
+}
+```
+- Primarily used for embedded programming.
+
+---
+## `asm!`
+
+- Directly embed assembly in your Rust programs!
 
 ---
 ## Let's Build A Shell!
